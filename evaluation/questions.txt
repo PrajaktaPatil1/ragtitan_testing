@@ -1,0 +1,19 @@
+What is Machine Learning?
+
+What are the main types of Machine Learning?
+
+What is supervised learning?
+
+Explain the difference between classification and regression.
+
+What is overfitting in Machine Learning?
+
+What is underfitting?
+
+Explain the bias-variance tradeoff.
+
+What is gradient descent?
+
+What is a decision tree?
+
+What is a random forest?
