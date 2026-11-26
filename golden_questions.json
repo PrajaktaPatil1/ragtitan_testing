@@ -1,67 +1,140 @@
 [
     {
         "id": "q1",
-        "question": "How many days of annual leave do employees receive?",
-        "expected_answer": "Employees receive 24 days of annual leave per calendar year.",
+        "question": "What is Machine Learning?",
+        "expected_answer": "Machine Learning is the science and art of programming computers so they can learn from data, giving computers the ability to learn without being explicitly programmed.",
         "expected_evidence": [
-            "Employees receive 24 days of annual leave per calendar year."
+            "Machine Learning is the science (and art) of programming computers so they can\nlearn from data."
         ],
         "required_facts": [
-            "24 days",
-            "annual leave"
+            "learn from data"
         ],
         "answerable": true,
         "validated": true
     },
     {
         "id": "q2",
-        "question": "How many sick leave days are employees given per year?",
-        "expected_answer": "Employees receive 10 days of sick leave per calendar year.",
+        "question": "What are the main types of Machine Learning?",
+        "expected_answer": "The four major categories of Machine Learning systems are supervised learning, unsupervised learning, semisupervised learning, and Reinforcement Learning.",
         "expected_evidence": [
-            "Employees receive 10 days of sick leave per calendar year."
+            "There are four major categories: supervised\nlearning, unsupervised learning, semisupervised learning, and Reinforcement\nLearning."
         ],
         "required_facts": [
-            "10 days",
-            "sick leave"
+            "supervised",
+            "unsupervised",
+            "semisupervised",
+            "Reinforcement Learning"
         ],
         "answerable": true,
         "validated": true
     },
     {
         "id": "q3",
-        "question": "How many days per week can employees work from home?",
-        "expected_answer": "Employees can work remotely 3 days per week.",
+        "question": "What is supervised learning?",
+        "expected_answer": "In supervised learning, the training set fed to the algorithm includes the desired solutions, called labels.",
         "expected_evidence": [
-            "Employees can work remotely 3 days per week."
+            "In supervised learning, the training set you feed to the algorithm includes the desired\nsolutions, called labels (Figure 1-5)."
         ],
         "required_facts": [
-            "3 days"
+            "labels"
         ],
         "answerable": true,
         "validated": true
     },
     {
         "id": "q4",
-        "question": "What is the standard notice period for employees?",
-        "expected_answer": "The standard notice period for employees is 30 days.",
+        "question": "Explain the difference between classification and regression.",
+        "expected_answer": "Classification assigns inputs to a class (such as spam or ham), whereas regression predicts a target numeric value (such as the price of a car) given features called predictors.",
         "expected_evidence": [
-            "The standard notice period for employees is 30 days."
+            "A typical supervised learning task is classification. The spam filter is a good example\nof this: it is trained with many example emails along with their class (spam or ham),\nand it must learn how to classify new emails.\nAnother typical task is to predict a target numeric value, such as the price of a car,\ngiven a set of features (mileage, age, brand, etc.) called predictors. This sort of task is\ncalled regression (Figure 1-6)."
         ],
         "required_facts": [
-            "30 days"
+            "class",
+            "numeric value"
         ],
         "answerable": true,
         "validated": true
     },
     {
         "id": "q5",
-        "question": "How much internet reimbursement do employees receive per month?",
-        "expected_answer": "Employees receive an internet reimbursement of 1000 rupees per month.",
+        "question": "What is overfitting in Machine Learning?",
+        "expected_answer": "Overfitting means that the model performs well on the training data, but it does not generalize well to new instances.",
         "expected_evidence": [
-            "Employees receive an internet reimbursement of 1000 rupees per month."
+            "In Machine Learning this is called overfitting: it\nmeans that the model performs well on the training data, but it does not generalize\nwell."
         ],
         "required_facts": [
-            "1000 rupees"
+            "training data",
+            "generalize"
+        ],
+        "answerable": true,
+        "validated": true
+    },
+    {
+        "id": "q6",
+        "question": "What is underfitting?",
+        "expected_answer": "Underfitting occurs when a model is too simple to learn the underlying structure of the data.",
+        "expected_evidence": [
+            "As you might guess, underfitting is the opposite of overfitting: it occurs when your\nmodel is too simple to learn the underlying structure of the data."
+        ],
+        "required_facts": [
+            "too simple",
+            "structure of the data"
+        ],
+        "answerable": true,
+        "validated": true
+    },
+    {
+        "id": "q7",
+        "question": "Explain the bias-variance tradeoff.",
+        "expected_answer": "Increasing a model's complexity typically increases its variance and reduces its bias, while reducing complexity increases its bias and reduces its variance.",
+        "expected_evidence": [
+            "Increasing a model’s complexity will typically increase its variance and reduce its bias.\nConversely, reducing a model’s complexity increases its bias and reduces its variance.\nThis is why it is called a trade-off."
+        ],
+        "required_facts": [
+            "variance",
+            "bias"
+        ],
+        "answerable": true,
+        "validated": true
+    },
+    {
+        "id": "q8",
+        "question": "What is gradient descent?",
+        "expected_answer": "Gradient Descent is a generic optimization algorithm that tweaks parameters iteratively in order to minimize a cost function.",
+        "expected_evidence": [
+            "Gradient Descent is a generic optimization algorithm capable of finding optimal solu‐\ntions to a wide range of problems. The general idea of Gradient Descent is to tweak\nparameters iteratively in order to minimize a cost function."
+        ],
+        "required_facts": [
+            "optimization",
+            "cost function"
+        ],
+        "answerable": true,
+        "validated": true
+    },
+    {
+        "id": "q9",
+        "question": "What is a decision tree?",
+        "expected_answer": "Decision Trees are versatile Machine Learning algorithms that can perform both classification and regression tasks, as well as multioutput tasks.",
+        "expected_evidence": [
+            "Like SVMs, Decision Trees  are versatile Machine Learning algorithms that can per‐\nform both classification and regression tasks, and even multioutput tasks."
+        ],
+        "required_facts": [
+            "classification",
+            "regression"
+        ],
+        "answerable": true,
+        "validated": true
+    },
+    {
+        "id": "q10",
+        "question": "What is a random forest?",
+        "expected_answer": "A Random Forest is an ensemble of Decision Trees, generally trained via the bagging method (or sometimes pasting), typically with max_samples set to the size of the training set.",
+        "expected_evidence": [
+            "As we have discussed, a Random Forest 9 is an ensemble of Decision Trees, generally\ntrained via the bagging method (or sometimes pasting), typically with max_samples\nset to the size of the training set."
+        ],
+        "required_facts": [
+            "ensemble",
+            "Decision Trees"
         ],
         "answerable": true,
         "validated": true

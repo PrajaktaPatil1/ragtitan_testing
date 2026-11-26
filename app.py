@@ -3,49 +3,24 @@ from pathlib import Path
 
 from rag_titan import RAGTitan, setup_logging
 
-DOCS_DIR = Path("docs")
-SUPPORTED_EXTENSIONS = ("*.pdf", "*.docx", "*.txt", "*.md")
-MAX_DEFAULT_MB = 10
+from rag_utils import DEFAULT_PDF, configure_safe_loader
 
 
-def find_documents(explicit_files=None, include_all=False):
-    """Collect document paths to index, skipping very large files by default."""
-    if explicit_files:
-        files = [Path(p) for p in explicit_files]
-        missing = [str(p) for p in files if not p.is_file()]
-        if missing:
-            raise FileNotFoundError(f"File(s) not found: {', '.join(missing)}")
-        return files
-
-    if not DOCS_DIR.is_dir():
-        return []
-
-    all_files = sorted({p for ext in SUPPORTED_EXTENSIONS for p in DOCS_DIR.glob(ext)})
-    if include_all:
-        return all_files
-
-    selected, skipped = [], []
-    for path in all_files:
-        size_mb = path.stat().st_size / (1024 * 1024)
-        if size_mb > MAX_DEFAULT_MB:
-            skipped.append((path, size_mb))
-        else:
-            selected.append(path)
-
-    for path, size_mb in skipped:
-        print(
-            f"Skipping large file '{path.name}' ({size_mb:.1f} MB). "
-            "Use --all or pdf_chat.py to index it."
-        )
-    return selected
+def resolve_files(explicit_files=None):
+    """Return validated document paths, defaulting to the Machine Learning PDF."""
+    files = [Path(p) for p in explicit_files] if explicit_files else [DEFAULT_PDF]
+    missing = [str(p) for p in files if not p.is_file()]
+    if missing:
+        raise FileNotFoundError(f"File(s) not found: {', '.join(missing)}")
+    return files
 
 
 def run_chat(rag):
     """Start an interactive question-and-answer loop."""
-    print("\n" + "=" * 50)
-    print("       LOCAL RAG CHATBOT IS READY")
-    print("=" * 50)
-    print("\nAsk questions based on your documents.")
+    print("\n" + "=" * 55)
+    print("       MACHINE LEARNING RAG CHATBOT IS READY")
+    print("=" * 55)
+    print("\nAsk questions about your Machine Learning book.")
     print("Type 'trace' to inspect pipeline steps, or 'exit' to quit.")
 
     while True:
@@ -78,12 +53,15 @@ def run_chat(rag):
 
 
 def parse_args():
-    """Parse optional CLI arguments for one-shot or custom runs."""
-    parser = argparse.ArgumentParser(description="Simple local RAG chatbot powered by RAG-Titan.")
-    parser.add_argument("--files", nargs="+", help="Specific document paths to index.")
-    parser.add_argument("--all", action="store_true", help="Include large files (>10 MB) in docs/.")
+    """Parse optional CLI arguments."""
+    parser = argparse.ArgumentParser(
+        description="Machine Learning RAG chatbot powered by RAG-Titan."
+    )
+    parser.add_argument("--files", nargs="+", help="Optional custom document path(s) to index.")
     parser.add_argument("--rag-type", default="simple", choices=["simple", "adaptive", "parent_child"],
                         help="RAG strategy to use (default: simple).")
+    parser.add_argument("--reindex", action="store_true",
+                        help="Rebuild the vector index even if saved chunks already exist.")
     parser.add_argument("--question", help="Ask a single question and exit (non-interactive).")
     parser.add_argument("--trace", action="store_true", help="Print pipeline trace with --question.")
     parser.add_argument("--log-level", default="WARNING", choices=["DEBUG", "INFO", "WARNING"],
@@ -95,21 +73,21 @@ def main():
     args = parse_args()
     setup_logging(args.log_level)
 
-    files = find_documents(explicit_files=args.files, include_all=args.all)
-    if not files:
-        print("No documents found in docs/. Add PDF, DOCX, TXT, or MD files (or pass --files).")
-        raise SystemExit(1)
+    files = resolve_files(args.files)
+    print("Initializing Machine Learning RAG...")
+    rag = configure_safe_loader(RAGTitan(rag_type=args.rag_type))
 
-    print("Documents selected:")
-    for file in files:
-        print(f"- {file}")
+    persistent = getattr(rag.pipeline.store, "persistent", False)
+    existing_chunks = rag.count() if persistent else 0
 
-    print(f"\nInitializing RAG-Titan ({args.rag_type})...")
-    rag = RAGTitan(rag_type=args.rag_type)
-
-    print("Indexing documents...")
-    chunk_count = rag.index([str(file) for file in files])
-    print(f"Indexed {chunk_count} chunk(s).")
+    if existing_chunks > 0 and not args.reindex and not args.files:
+        print(f"Loaded {existing_chunks} existing chunk(s) from saved index.")
+    else:
+        print("Indexing document(s) (first run on the full book takes a few minutes)...")
+        for file in files:
+            print(f"- {file}")
+        chunk_count = rag.index([str(file) for file in files])
+        print(f"Indexed {chunk_count} chunk(s).")
 
     if args.question:
         if args.trace:
